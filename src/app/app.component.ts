@@ -48,8 +48,19 @@ export class AppComponent {
     console.log(this.selectedFile);
 
     const uploadImageData = new FormData();
+
+    if(this.imageDesc===undefined || this.imageDesc===null || this.imageDesc==="")
+    {
+      this.message="Failed"
+      this.imageDesc="Required"
+    }
+
+    else{
     uploadImageData.append('imageFile', this.selectedFile, this.selectedFile.name);
     uploadImageData.append('desc',this.imageDesc);
+
+
+
     this.httpClient.post('http://localhost:8080/image/upload', uploadImageData, { observe: 'response' })
       .subscribe((response) => {
         //console.log("Response-->",response)
@@ -62,4 +73,5 @@ export class AppComponent {
       );
       
   }
+}
 }
