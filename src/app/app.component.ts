@@ -33,23 +33,36 @@ export class AppComponent {
 
   imageName: any;
   imageDesc:any;
+  
 
   public onFileChanged(event:any) {
 
     this.selectedFile = event.target.files[0];
+    
+
+  
   }
 
   
 
-  
 
   onUpload() {
 
     console.log(this.selectedFile);
 
     const uploadImageData = new FormData();
+    const  fileType =  this.selectedFile['type'];
+    const validImageTypes = ['image/jpeg', 'image/png'];
+    if((this.selectedFile.size)>500000)
+  {
+    this.message="Size limit exceeded,Max Limit 500KB"
+  }
+    else if (!validImageTypes.includes(fileType)) {
+      this.message="Invalid File Type"
+  }
+  
 
-    if(this.imageDesc===undefined || this.imageDesc===null || this.imageDesc==="")
+    else if(this.imageDesc===undefined || this.imageDesc===null || this.imageDesc==="")
     {
       this.message="Failed"
       this.imageDesc="Required"
@@ -58,9 +71,6 @@ export class AppComponent {
     else{
     uploadImageData.append('imageFile', this.selectedFile, this.selectedFile.name);
     uploadImageData.append('desc',this.imageDesc);
-
-
-
     this.httpClient.post('http://localhost:8080/image/upload', uploadImageData, { observe: 'response' })
       .subscribe((response) => {
         //console.log("Response-->",response)
