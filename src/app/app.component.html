@@ -21,7 +21,9 @@
   <hr />
   <div class="container row">
       <div class="col-md-12">
-          <div *ngIf=message>{{message}}</div>
+        <input [(ngModel)]="message" placeholder="Response"/>
+          <div *ngIf=message>
+        </div>
       </div>
   </div>
 
