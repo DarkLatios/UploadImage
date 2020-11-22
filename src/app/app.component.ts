@@ -20,16 +20,6 @@ export class AppComponent {
 
 
 
-  // form:FormGroup
-  // constructor(private fb:FormBuilder){
-  //   this.form=fb.group({
-  //     file:new FormControl('')
-  //   })
-  // }
-  // fileChange(e:any){
-  //   alert(e.target.files[0].name)
-  // }
-
   constructor(private httpClient: HttpClient) { }
 
   selectedFile!: File;
@@ -42,11 +32,14 @@ export class AppComponent {
   message!: string;
 
   imageName: any;
+  imageDesc:any;
 
   public onFileChanged(event:any) {
 
     this.selectedFile = event.target.files[0];
   }
+
+  
 
   
 
@@ -56,28 +49,17 @@ export class AppComponent {
 
     const uploadImageData = new FormData();
     uploadImageData.append('imageFile', this.selectedFile, this.selectedFile.name);
-    uploadImageData.append('desc',"This is a file");
-    console.log("Filename==",this.selectedFile.name)
+    uploadImageData.append('desc',this.imageDesc);
     this.httpClient.post('http://localhost:8080/image/upload', uploadImageData, { observe: 'response' })
       .subscribe((response) => {
         //console.log("Response-->",response)
         if (response.status === 201) {
-          this.message = 'Image uploaded successfully';
+          this.message = 'Success';
         }
       },
       error =>
       this.message=error.error.message
       );
       
-  }
-    getImage() {
-    this.httpClient.get('http://localhost:8080/image/get/' + this.imageName)
-      .subscribe(
-        res => {
-          this.retrieveResonse = res;
-          this.base64Data = this.retrieveResonse.picByte;
-          this.retrievedImage = 'data:image/jpeg;base64,' + this.base64Data;
-        }
-      );
   }
 }
