@@ -15,6 +15,10 @@
             name="imageDesc" />
             <div *ngIf=imageDesc></div>
     </div>
+    <div style="width: 30%;">
+      <h1>Upload in Progess.... {{value}}</h1>
+      <mat-progress-bar mode="determinate" [value]="value"></mat-progress-bar>
+    </div>
       <div class="col-md-6">
           <input type="button" (click)="onUpload()" value="Submit image">
       </div>

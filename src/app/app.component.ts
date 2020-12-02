@@ -21,6 +21,21 @@ export class AppComponent {
 
 
   constructor(private httpClient: HttpClient) { }
+  private _value:number=0
+
+  get value():number{
+    return this._value;
+  }
+  set value(value:number){
+    if(!isNaN(value) && value<=100)
+    {
+      this._value=value;
+    }
+  }
+
+
+
+
 
   selectedFile!: File;
   retrievedImage: any;
@@ -71,9 +86,10 @@ export class AppComponent {
     else{
     uploadImageData.append('imageFile', this.selectedFile, this.selectedFile.name);
     uploadImageData.append('desc',this.imageDesc);
-    this.httpClient.post('http://localhost:8080/image/upload', uploadImageData, { observe: 'response' })
+    this.httpClient.post('http://localhost:8080/image/upload', uploadImageData, { observe: 'response',responseType:'blob',
+                        reportProgress:true })
       .subscribe((response) => {
-        //console.log("Response-->",response)
+        console.log("Response-->",response)
         if (response.status === 201) {
           this.message = 'Success';
         }
